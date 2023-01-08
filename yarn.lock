@@ -1931,6 +1931,11 @@
     "prompts" "^2.4.0"
     "semver" "^6.3.0"
 
+"@react-native-community/geolocation@^3.0.4":
+  "integrity" "sha512-zzf+DISPwEpMH25tR33hgVuy89emYYTrZQarbCSwFOU6fH9MNxnmsRPmdpuNI9YvnjMtEj5kzDrGyqBhx86n6A=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/geolocation/-/geolocation-3.0.4.tgz"
+  "version" "3.0.4"
+
 "@react-native/assets@1.0.0":
   "version" "1.0.0"
 
@@ -4230,6 +4235,11 @@
 
 "expo-keep-awake@~11.0.1":
   "version" "11.0.1"
+
+"expo-location@^15.0.1":
+  "integrity" "sha512-GOAP24m8fMahFcBT75H07f2+IQAOCOdNTzb8Ci/19NZ+Y/CY2lIvb55V8zu7Gn0+76FKPb7XC3ebQaq4ctn1QA=="
+  "resolved" "https://registry.npmjs.org/expo-location/-/expo-location-15.0.1.tgz"
+  "version" "15.0.1"
 
 "expo-modules-autolinking@>=0.8.1", "expo-modules-autolinking@0.8.1":
   "version" "0.8.1"

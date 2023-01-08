@@ -13,6 +13,7 @@ import Toast from "react-native-toast-message";
 import { auth } from "../firebase";
 
 const RegisterScreen = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
@@ -24,6 +25,11 @@ const RegisterScreen = () => {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
+        if (user) {
+          user.updateProfile({
+            displayName: name,
+          });
+        }
         Toast.show({
           type: "success",
           position: "top",
@@ -53,6 +59,12 @@ const RegisterScreen = () => {
         <Toast refs={(ref) => Toast.setRef(ref)} />
         <Text style={styles.partyFinderText}>Regisztráció</Text>
         <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Teljes név"
+            value={name}
+            onChangeText={(text) => setName(text)}
+            style={styles.input}
+          />
           <TextInput
             placeholder="Email"
             value={email}

@@ -58,7 +58,7 @@ const LoginScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container} behavior="padding">
-        <Toast ref={(ref) => Toast.setRef(ref)} />
+        <Toast refs={(ref) => Toast.setRef(ref)} />
         <Text style={styles.partyFinderText}>Bejelentkezés</Text>
         <View style={styles.inputContainer}>
           <TextInput

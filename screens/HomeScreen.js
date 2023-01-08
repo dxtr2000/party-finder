@@ -75,7 +75,7 @@ const HomeScreen = () => {
         <Marker coordinate={coordinates} pinColor="red" />
         {savedLocations.map((location, id) => (
           <Marker
-            key={location.id}
+            key={id}
             coordinate={location.coordinates}
             pinColor="blue"
           >
@@ -85,7 +85,7 @@ const HomeScreen = () => {
           </Marker>
         ))}
       </MapView>
-      <Toast ref={(ref) => Toast.setRef(ref)} />
+      <Toast refs={(ref) => Toast.setRef(ref)} />
       <View style={styles.containerB} behavior="padding">
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={saveLocation} style={styles.button}>

@@ -21,7 +21,11 @@ const HomeScreen = () => {
       .collection("locations")
       .get()
       .then((querySnapshot) => {
-        return querySnapshot.docs.map((doc) => doc.data());
+        return querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          data.id = doc.id;
+          return data;
+        });
       });
     setSavedLocations(locations);
   };
@@ -75,12 +79,12 @@ const HomeScreen = () => {
         <Marker coordinate={coordinates} pinColor="red" />
         {savedLocations.map((location, id) => (
           <Marker
-            key={id}
+            key={location.id}
             coordinate={location.coordinates}
             pinColor="blue"
           >
             <Callout>
-              <Text>{location.name}</Text>
+              <Text>{location.id}</Text>
             </Callout>
           </Marker>
         ))}

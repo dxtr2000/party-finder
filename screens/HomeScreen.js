@@ -7,7 +7,9 @@ import {
   StyleSheet,
   Linking,
   Modal,
-  Pressable,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import MapView, { Marker, Callout } from "react-native-maps";
 import Toast from "react-native-toast-message";
@@ -33,6 +35,9 @@ const HomeScreen = () => {
 
   const [savedLocations, setSavedLocations] = useState([]);
 
+  const [eventName, setEventName] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+
   const getCurrentLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -49,7 +54,6 @@ const HomeScreen = () => {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     });
-    console.log(location.coords.latitude, location.coords.longitude);
   };
 
   const fetchSavedLocations = async () => {
@@ -85,7 +89,10 @@ const HomeScreen = () => {
       .collection("locations")
       .add({
         coordinates,
-        name: "My Location 2",
+        name: eventName,
+        description: eventDescription,
+        addedby: auth.currentUser.displayName,
+        userid: auth.currentUser.uid,
       })
       .then(() => {
         console.log("Location saved!");
@@ -99,6 +106,7 @@ const HomeScreen = () => {
           onHide: () => fetchSavedLocations(),
         });
       });
+    setModalVisible(false);
   };
 
   return (
@@ -123,7 +131,10 @@ const HomeScreen = () => {
             pinColor="blue"
           >
             <Callout>
-              <Text>{location.id}</Text>
+              <Text style={styles.calloutTitle}>{location.name}</Text>
+              <Text style={styles.calloutDescription}>
+                {location.description}
+              </Text>
               <View behavior="padding">
                 <View style={styles.callOutbuttonContainer}>
                   <TouchableOpacity
@@ -135,12 +146,7 @@ const HomeScreen = () => {
                     style={styles.callOutbutton}
                   >
                     <Text style={styles.callOutbuttonText}>
-                      <Icon name="map-marker" size={30} />
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.callOutbutton}>
-                    <Text style={styles.callOutbuttonText}>
-                      <Icon name="info" size={30} />
+                      <Text>Útvonal</Text>
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -158,22 +164,50 @@ const HomeScreen = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.centeredView}>
+            <Text style={styles.modalText}>Esemény felvétele</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Esemény megnevezése"
+                style={styles.input}
+                value={eventName}
+                onChangeText={(text) => setEventName(text)}
+                placeholderTextColor="black"
+              />
+              <TextInput
+                placeholder="Esemény leírása"
+                style={styles.input}
+                value={eventDescription}
+                onChangeText={(text) => setEventDescription(text)}
+                placeholderTextColor="black"
+                multiline={true}
+              />
+            </View>
+            <View style={styles.ModalButtonContainer}>
+              <TouchableOpacity
+                style={styles.ModalButton}
+                onPress={() => saveLocation()}
+              >
+                <Text style={styles.textStyle}>Esemény hozzáadása</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ModalButton}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Mégsem</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
       <Toast refs={(ref) => Toast.setRef(ref)} />
       <View style={styles.containerB} behavior="padding">
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={saveLocation} style={styles.button}>
+          <TouchableOpacity
+            onPress={() => navigation.replace("Profile")}
+            style={styles.button}
+          >
             <Text style={styles.buttonText}>
               <Icon name="user" size={30} color="white" />
             </Text>
@@ -255,20 +289,89 @@ const styles = StyleSheet.create({
   },
   callOutbutton: {
     backgroundColor: "#0782F9",
-    width: 40,
-    padding: 5,
+    width: 100,
+    padding: 10,
     borderRadius: 30,
     alignItems: "center",
     shadowColor: "#171717",
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    marginLeft: 10,
+    marginTop: 10,
   },
   callOutbuttonText: {
     color: "white",
     fontWeight: "900",
-    fontSize: 24,
+    fontSize: 14,
+  },
+  centeredView: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "rgba(245, 252, 255, 0.95)",
+    width: "100%",
+    height: "100%",
+    padding: 20,
+    borderRadius: 25,
+    shadowColor: "#171717",
+  },
+  inputContainer: {
+    width: "80%",
+  },
+  input: {
+    backgroundColor: "white",
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    borderRadius: 10,
+    marginTop: 10,
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  ModalButtonContainer: {
+    width: "80%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  ModalButton: {
+    backgroundColor: "#0782F9",
+    width: "100%",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    marginBottom: 10,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "900",
+    fontSize: 18,
+  },
+  modalText: {
+    color: "black",
+    fontWeight: "900",
+    fontSize: 34,
+    marginBottom: 235,
+    paddingTop: 60,
+  },
+  calloutTitle: {
+    color: "black",
+    fontWeight: "900",
+    fontSize: 18,
+    maxWidth: 200,
+  },
+  calloutDescription: {
+    color: "black",
+    maxWidth: 200,
+    fontSize: 14,
+  },
+  calloutCentered: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

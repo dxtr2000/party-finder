@@ -12,6 +12,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
         <Stack.Screen
           options={{ headerShown: false }}
           name="Register"
@@ -19,15 +24,9 @@ export default function App() {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Login"
-          component={LoginScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
           name="Home"
           component={HomeScreen}
         />
-
         <Stack.Screen
           options={{ headerShown: false }}
           name="Profile"

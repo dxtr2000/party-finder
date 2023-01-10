@@ -63,11 +63,7 @@ const ProfileScreen = () => {
       <View style={styles.container} behavior="padding">
         <Toast refs={(ref) => Toast.setRef(ref)} />
         <View style={styles.partyFinderText}>
-          <Image
-            source={require("../assets/profile.jpg")}
-            style={styles.profileImage}
-          />
-          <Text style={styles.customText}>{auth.currentUser.displayName}</Text>
+          <Text style={styles.customText}>Profil</Text>
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -190,7 +186,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     marginTop: 85,
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -201,8 +197,8 @@ const styles = StyleSheet.create({
   },
   customText: {
     color: "black",
-    fontWeight: "700",
-    fontSize: 35,
+    fontWeight: "900",
+    fontSize: 45,
     padding: 10,
   },
 });

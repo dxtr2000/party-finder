@@ -41,7 +41,7 @@ const HomeScreen = () => {
   const getCurrentLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
+      setErrorMsg("Nem lett engedély megadva a lokációnak!");
       return;
     }
 
